@@ -1,0 +1,25 @@
+# This is my netplan configuration file on Ubuntu 26.04. LTS located /etc/netplan/00-installer-config.yaml If it doesn’t exist, then just create it.
+# .yaml files are indentation sensitive!
+# To add a static network address you need:
+# 1 - specify your interface (ens0/ens0s3/eth0). 
+# 2 - disable dhcp (false). 
+# 3 - indicate the IP available to you in the (addresses) section. 
+# 4 - configure the route: to - route direction, via - through which gateway we will get there on-link - route activation 
+# Check: netplan try - configuration check, netplan --debug generate
+# We launch new settings using netplan apply and check that our statistically configured IP address is active: ip addr show then ip route show
+
+network:
+ version: 2
+ renderer: networkd
+ ethernets:
+    ens33:
+     dhcp4: false
+     dhcp6: false
+     addresses:
+       - 192.168.1.125/24
+     routes:
+       - to: 192.168.0.0/24
+         via: 192.168.1.1
+         on-link: true
+    nameservers:
+      addresses: [8.8.8.8,1.1.1.1]
